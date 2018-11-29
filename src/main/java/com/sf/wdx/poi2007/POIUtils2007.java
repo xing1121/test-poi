@@ -24,6 +24,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 /**
  * 描述：java操作excel工具类2007
  * @author 80002888
@@ -167,11 +168,12 @@ public class POIUtils2007 {
 	 * 传入普通对象（属性是基本类型和Date）的list集合和一个输出流，自动将list内容写到输出流中
 	 *	@ReturnType	void 
 	 *	@Date	2018年9月10日	下午6:53:12
-	 *  @Param  @param headers			xlsx文件中第一行按顺序显示的列名，可以为null
-	 *  @Param  @param sourceList		实体集合
-	 *  @Param  @param outputStream		输出流
+	 *  @Param  @param headers				xlsx文件中第一行按顺序显示的列名，可以为null
+	 *  @Param  @param sourceList			实体集合
+	 *  @Param  @param outputStream			输出流
+	 *  @Param  @param ignoreProperties		忽视的属性名称
 	 */
-	public static <T> void list2Out(List<String> headers, List<T> sourceList, OutputStream outputStream) {
+	public static <T> void list2Out(List<String> headers, List<T> sourceList, OutputStream outputStream, List<String> ignoreProperties) {
 		if (outputStream == null || sourceList == null || sourceList.size() == 0) {
 			return;
 		}
@@ -186,11 +188,16 @@ public class POIUtils2007 {
 			// 在Workbook对象中创建Sheet（对应一个Sheet工作表），设置工作表中单元格的默认宽度
 			Sheet sheet = workbook.createSheet(clazz.getName());
 			sheet.setDefaultColumnWidth(20);
-			// 去除serialVersionUID属性，一个属性对应一列，一个cell为行的一个格子
+			// 一个属性对应一列，一个cell为行的一个格子
 			Field[] fields = clazz.getDeclaredFields();
 			List<Field> list = new ArrayList<>();
 			for (Field field : fields) {
+				// 去除serialVersionUID属性
 				if (field.getName().equals("serialVersionUID")) {
+					continue;
+				}
+				// 要去除的属性
+				if (ignoreProperties != null && ignoreProperties.contains(field.getName())) {
 					continue;
 				}
 				list.add(field);
@@ -270,17 +277,18 @@ public class POIUtils2007 {
 	 * 传入普通对象（属性是基本类型和Date）的list集合，转换为byte[]
 	 *	@ReturnType	byte[] 
 	 *	@Date	2018年9月10日	下午6:52:59
-	 *  @Param  @param headers			xlsx文件中第一行按顺序显示的列名，可以为null
-	 *  @Param  @param sourceList		实体集合
-	 *  @Param  @return					数组
+	 *  @Param  @param headers				xlsx文件中第一行按顺序显示的列名，可以为null
+	 *  @Param  @param sourceList			实体集合
+	 *  @Param  @param ignoreProperties		忽视的属性名称
+	 *  @Param  @return						数组
 	 */
-	public static <T> byte[] list2Bytes(List<String> headers, List<T> sourceList) {
+	public static <T> byte[] list2Bytes(List<String> headers, List<T> sourceList, List<String> ignoreProperties) {
 		if (sourceList == null || sourceList.size() == 0) {
 			return null;
 		}
 		try {
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			list2Out(headers, sourceList, bos);
+			list2Out(headers, sourceList, bos, ignoreProperties);
 			return bos.toByteArray();
 		} catch (Exception e) {
 			logger.error("get error->", e);

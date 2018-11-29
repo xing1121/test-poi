@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
@@ -69,9 +70,9 @@ public class TestPOI2007 {
 			headers.add("猫的名");
 			headers.add("重量");
 			headers.add("SEX");
-			POIUtils2007.list2Out(headers, cats, new FileOutputStream(new File("D:/user/80002888/桌面/poi.xlsx")));
+			POIUtils2007.list2Out(headers, cats, new FileOutputStream(new File("D:/user/80002888/桌面/poi.xlsx")), null);
 			// 转为数组输出
-			byte[] bs = POIUtils2007.list2Bytes(headers, cats);
+			byte[] bs = POIUtils2007.list2Bytes(headers, cats, null);
 			System.out.println(bs.length);
 		} catch (Exception e) {
 			logger.error("get error->", e);
@@ -89,7 +90,7 @@ public class TestPOI2007 {
 		try {
 			// xlsx中每一列顺序对应实体的属性名
 			List<String> fieldNames = new ArrayList<>();
-			fieldNames.add("id");
+//			fieldNames.add("id");
 			fieldNames.add("name");
 			fieldNames.add("age");
 			fieldNames.add("birthDay");
@@ -142,9 +143,9 @@ public class TestPOI2007 {
 			headers.add("是否有工作");
 			headers.add("工资");
 			// 转为文件输出
-			POIUtils2007.list2Out(headers, persons, new FileOutputStream(new File("D:/user/80002888/桌面/poi.xlsx")));
+			POIUtils2007.list2Out(headers, persons, new FileOutputStream(new File("D:/user/80002888/桌面/poi.xlsx")), Arrays.asList("id"));
 			// 转为数组输出
-			byte[] bs = POIUtils2007.list2Bytes(headers, persons);
+			byte[] bs = POIUtils2007.list2Bytes(headers, persons, Arrays.asList("id"));
 			System.out.println(bs.length);
 		} catch (Exception e) {
 			logger.error("get error->", e);
