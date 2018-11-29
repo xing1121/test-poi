@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
@@ -22,8 +23,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.sf.wdx.utils.ListUtils;
 
 /**
  * 描述：java操作excel工具类2007
@@ -196,7 +195,9 @@ public class POIUtils2007 {
 				}
 				list.add(field);
 			}
-			fields = ListUtils.listToArray(list);
+			// list转数组
+			fields = (Field[]) Array.newInstance(Field.class, list.size());
+			list.toArray(fields);
 			/***************************************************************/
 			// 创建第一行，放列名字
 			Row headRow = sheet.createRow(0);
