@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.DataFormat;
@@ -171,9 +172,10 @@ public class POIUtils2007 {
 	 *  @Param  @param headers				xlsx文件中第一行按顺序显示的列名，可以为null
 	 *  @Param  @param sourceList			实体集合
 	 *  @Param  @param outputStream			输出流
-	 *  @Param  @param ignoreProperties		忽视的属性名称
+	 *  @Param  @param propertyNames		属性名称
+	 *  @Param  @param keepStatus			属性保留还是去除
 	 */
-	public static <T> void list2Out(List<String> headers, List<T> sourceList, OutputStream outputStream, List<String> ignoreProperties) {
+	public static <T> void list2Out(List<String> headers, List<T> sourceList, OutputStream outputStream, List<String> propertyNames, boolean keepStatus) {
 		if (outputStream == null || sourceList == null || sourceList.size() == 0) {
 			return;
 		}
@@ -191,16 +193,37 @@ public class POIUtils2007 {
 			// 一个属性对应一列，一个cell为行的一个格子
 			Field[] fields = clazz.getDeclaredFields();
 			List<Field> list = new ArrayList<>();
-			for (Field field : fields) {
-				// 去除serialVersionUID属性
-				if (field.getName().equals("serialVersionUID")) {
-					continue;
+			
+			// 保留还是去除
+			if (keepStatus) {
+				// 要保留的属性
+				for (String propertyName : propertyNames) {
+					Field field = null;
+					try {
+						field = clazz.getDeclaredField(propertyName);
+					} catch (Exception e) {
+						logger.error("get error->", e);
+					}
+					if (field != null) {
+						list.add(field);
+					}
 				}
+			} else {
 				// 要去除的属性
-				if (ignoreProperties != null && ignoreProperties.contains(field.getName())) {
-					continue;
+				for (Field field : fields) {
+					// 去除serialVersionUID属性
+					if (field.getName().equals("serialVersionUID")) {
+						continue;
+					}
+					if (propertyNames != null && propertyNames.contains(field.getName())) {
+						continue;
+					}
+					list.add(field);
 				}
-				list.add(field);
+			}
+			
+			if (CollectionUtils.isEmpty(list)) {
+				return;
 			}
 			// list转数组
 			fields = (Field[]) Array.newInstance(Field.class, list.size());
@@ -279,16 +302,17 @@ public class POIUtils2007 {
 	 *	@Date	2018年9月10日	下午6:52:59
 	 *  @Param  @param headers				xlsx文件中第一行按顺序显示的列名，可以为null
 	 *  @Param  @param sourceList			实体集合
-	 *  @Param  @param ignoreProperties		忽视的属性名称
+	 *  @Param  @param propertyNames		属性名称
+	 *  @Param  @param keepStatus			属性保留还是去除
 	 *  @Param  @return						数组
 	 */
-	public static <T> byte[] list2Bytes(List<String> headers, List<T> sourceList, List<String> ignoreProperties) {
+	public static <T> byte[] list2Bytes(List<String> headers, List<T> sourceList, List<String> propertyNames, boolean keepStatus) {
 		if (sourceList == null || sourceList.size() == 0) {
 			return null;
 		}
 		try {
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			list2Out(headers, sourceList, bos, ignoreProperties);
+			list2Out(headers, sourceList, bos, propertyNames, keepStatus);
 			return bos.toByteArray();
 		} catch (Exception e) {
 			logger.error("get error->", e);

@@ -70,9 +70,9 @@ public class TestPOI2007 {
 			headers.add("猫的名");
 			headers.add("重量");
 			headers.add("SEX");
-			POIUtils2007.list2Out(headers, cats, new FileOutputStream(new File("D:/user/80002888/桌面/poi.xlsx")), null);
+			POIUtils2007.list2Out(headers, cats, new FileOutputStream(new File("D:/user/80002888/桌面/poi.xlsx")), null, false);
 			// 转为数组输出
-			byte[] bs = POIUtils2007.list2Bytes(headers, cats, null);
+			byte[] bs = POIUtils2007.list2Bytes(headers, cats, null, false);
 			System.out.println(bs.length);
 		} catch (Exception e) {
 			logger.error("get error->", e);
@@ -143,9 +143,9 @@ public class TestPOI2007 {
 			headers.add("是否有工作");
 			headers.add("工资");
 			// 转为文件输出
-			POIUtils2007.list2Out(headers, persons, new FileOutputStream(new File("D:/user/80002888/桌面/poi.xlsx")), Arrays.asList("id"));
+			POIUtils2007.list2Out(headers, persons, new FileOutputStream(new File("D:/user/80002888/桌面/poi.xlsx")), Arrays.asList("id"), false);
 			// 转为数组输出
-			byte[] bs = POIUtils2007.list2Bytes(headers, persons, Arrays.asList("id"));
+			byte[] bs = POIUtils2007.list2Bytes(headers, persons, Arrays.asList("id"), false);
 			System.out.println(bs.length);
 		} catch (Exception e) {
 			logger.error("get error->", e);
