@@ -1,4 +1,3 @@
-package com.sf.wdx.poi2007;
 //package com.sf.wdx.poi2007;
 //
 //import java.io.ByteArrayInputStream;
@@ -18,12 +17,12 @@ package com.sf.wdx.poi2007;
 //
 //import org.apache.poi.ss.usermodel.Cell;
 //import org.apache.poi.ss.usermodel.CellStyle;
-//import org.apache.poi.ss.usermodel.CellType;
 //import org.apache.poi.ss.usermodel.DataFormat;
 //import org.apache.poi.ss.usermodel.HorizontalAlignment;
 //import org.apache.poi.ss.usermodel.Row;
 //import org.apache.poi.ss.usermodel.Sheet;
 //import org.apache.poi.ss.usermodel.Workbook;
+//import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 //import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
@@ -34,7 +33,7 @@ package com.sf.wdx.poi2007;
 // * @author 80002888
 // * @date   2018年9月10日
 // */
-//public class POIUtils2007New {
+//public class POIUtils2007ForVerson317 {
 //
 //	// 获取 带泛型父类的 泛型类型
 //	// Type type = this.getClass().getGenericSuperclass();
@@ -194,8 +193,9 @@ package com.sf.wdx.poi2007;
 //		try {
 //			// 真实的泛型类型
 //			Class<? extends Object> clazz = sourceList.get(0).getClass();
-//			// 创建Workbook对像（对应一个xlsx文件）
-//			workbook = new XSSFWorkbook();
+////			/// TODO SXSSFWorkbook占用内存低，且速度要快大约8倍
+////			workbook = new XSSFWorkbook();
+//			workbook = new SXSSFWorkbook(100);
 //			// 全局样式，文字居中
 //			CellStyle basicCellStyle = workbook.createCellStyle();
 //			basicCellStyle.setAlignment(HorizontalAlignment.CENTER);

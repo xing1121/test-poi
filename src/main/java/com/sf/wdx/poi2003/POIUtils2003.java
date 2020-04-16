@@ -19,6 +19,7 @@ import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -179,8 +180,12 @@ public class POIUtils2003 {
 		try {
 			// 真实的泛型类型
 			Class<? extends Object> clazz = sourceList.get(0).getClass();
+			
 			// 创建Workbook对像（对应一个xlsx文件）
-			Workbook workbook = new HSSFWorkbook();
+//			/// TODO SXSSFWorkbook占用内存低，且速度要快大约8倍
+//			Workbook workbook = new HSSFWorkbook();
+			Workbook workbook = new SXSSFWorkbook(100);
+			
 			// 全局样式，文字居中
 			CellStyle basicCellStyle = workbook.createCellStyle();
 			basicCellStyle.setAlignment(CellStyle.ALIGN_CENTER);

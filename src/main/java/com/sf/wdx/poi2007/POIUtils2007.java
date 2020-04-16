@@ -57,14 +57,8 @@ public class POIUtils2007 {
 		try {
 			// 返回值
 			List<T> res = new ArrayList<>();
-			
 			// 读取输入流
 			Workbook workbook = new XSSFWorkbook(inputStream);
-			
-			/// TODO 以下的方式读不到
-//			// 读取输入流
-//			Workbook workbook = new SXSSFWorkbook(new XSSFWorkbook(inputStream), 100);
-			
 			// 读取工作表
 			Sheet sheet = workbook.getSheetAt(0);
 			// 存所有setter方法及其参数类型
@@ -190,12 +184,11 @@ public class POIUtils2007 {
 			// 真实的泛型类型
 			Class<? extends Object> clazz = sourceList.get(0).getClass();
 			
-//			// 创建Workbook对像（对应一个xlsx文件）
-//			Workbook workbook = new XSSFWorkbook();
-			
-			/// TODO SXSSFWorkbook占用低内存
 			// 创建Workbook对像（对应一个xlsx文件）
-			Workbook workbook = new SXSSFWorkbook();
+			
+//			/// TODO SXSSFWorkbook占用内存低，且速度要快大约8倍
+//			Workbook workbook = new XSSFWorkbook();
+			Workbook workbook = new SXSSFWorkbook(100);
 			
 			// 全局样式，文字居中
 			CellStyle basicCellStyle = workbook.createCellStyle();
