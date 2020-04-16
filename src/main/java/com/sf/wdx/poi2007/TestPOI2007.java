@@ -24,9 +24,11 @@ public class TestPOI2007 {
 
 	private static Logger logger = LoggerFactory.getLogger(TestPOI2007.class);
 	
-	private static String DATE_PATTERN = "yyyy-MM-dd";
+	private static final String DATE_PATTERN = "yyyy-MM-dd";
 	
-	private static String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+	private static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+	
+	private static final String FILE_PATH = "D:/user/80002888/desktop/poi.xlsx";
 	
 	/**
 	 * 测试POI2007---xlsx文件转list
@@ -43,7 +45,7 @@ public class TestPOI2007 {
 			fieldNames.add("name");
 			fieldNames.add("weight");
 			fieldNames.add("sex");
-			List<Cat> list = POIUtils2007.input2List(fieldNames, Cat.class, new FileInputStream(new File("D:/user/80002888/桌面/poi.xlsx")));
+			List<Cat> list = POIUtils2007.input2List(fieldNames, Cat.class, new FileInputStream(new File(FILE_PATH)));
 			list.forEach(System.out::println);
 		} catch (Exception e) {
 			logger.error("get error->", e);
@@ -70,7 +72,7 @@ public class TestPOI2007 {
 			headers.add("猫的名");
 			headers.add("重量");
 			headers.add("SEX");
-			POIUtils2007.list2Out(headers, cats, new FileOutputStream(new File("D:/user/80002888/桌面/poi.xlsx")), null, false);
+			POIUtils2007.list2Out(headers, cats, new FileOutputStream(new File(FILE_PATH)), null, false);
 			// 转为数组输出
 			byte[] bs = POIUtils2007.list2Bytes(headers, cats, null, false);
 			System.out.println(bs.length);
@@ -97,7 +99,7 @@ public class TestPOI2007 {
 			fieldNames.add("birthDayTime");
 			fieldNames.add("workStatus");
 			fieldNames.add("salary");
-			List<Person> list = POIUtils2007.input2List(fieldNames, Person.class, new FileInputStream(new File("D:/user/80002888/桌面/poi.xlsx")));
+			List<Person> list = POIUtils2007.input2List(fieldNames, Person.class, new FileInputStream(new File(FILE_PATH)));
 			list.forEach(System.out::println);
 		} catch (Exception e) {
 			logger.error("get error->", e);
@@ -143,7 +145,7 @@ public class TestPOI2007 {
 			headers.add("是否有工作");
 			headers.add("工资");
 			// 转为文件输出
-			POIUtils2007.list2Out(headers, persons, new FileOutputStream(new File("D:/user/80002888/桌面/poi.xlsx")), Arrays.asList("id"), false);
+			POIUtils2007.list2Out(headers, persons, new FileOutputStream(new File(FILE_PATH)), Arrays.asList("id"), false);
 			// 转为数组输出
 			byte[] bs = POIUtils2007.list2Bytes(headers, persons, Arrays.asList("id"), false);
 			System.out.println(bs.length);
